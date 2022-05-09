@@ -16,6 +16,9 @@ const initialState = {
     token: token || null,
     loading: false,
 }
+const headers = {
+    'Authorization': `Bearer ${token}`,
+}
 export const login = createAsyncThunk(
     'login',
     async ({email,password}, {rejectWithValue})=>{
@@ -25,7 +28,7 @@ export const login = createAsyncThunk(
                 email,
                 password
             }
-            const user = await axios.post(`${API_BASE}/users/signin`,data)
+            const user = await axios.post(`${API_BASE}/users/signin`,data,headers)
             localStorage.setItem("currentUser", JSON.stringify(user.data.user))
             localStorage.setItem("token", JSON.stringify(user.data.token))
             return user.data

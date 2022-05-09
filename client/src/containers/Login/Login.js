@@ -13,13 +13,22 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {login} from '../../redux/reducer/authReducer'
-import { useDispatch } from 'react-redux';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from "react-router-dom";
 
 const theme = createTheme();
 
 export default function Login() {
     const dispatch = useDispatch();
+    let navigate = useNavigate();
+    const user = useSelector(state => state.auth.user);
+    
+    React.useEffect(()=>{
+        if(user){
+            navigate('/');
+        }
+
+    },[user])
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
@@ -27,10 +36,7 @@ export default function Login() {
             email: data.get('email'),
             password: data.get('password'),
             }))
-        console.log({
-        email: data.get('email'),
-        password: data.get('password'),
-        });
+        
     };
 
     return (
