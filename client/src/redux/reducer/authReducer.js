@@ -15,6 +15,8 @@ const initialState = {
     user: user || null,
     token: token || null,
     loading: false,
+    newUser: null,
+    error: null
 }
 const headers = {
     'Authorization': `Bearer ${token}`,
@@ -39,6 +41,30 @@ export const login = createAsyncThunk(
         }
     }
     )
+
+export const register = createAsyncThunk(
+    'register',
+    async ({email,password, firstName, lastName, dni, username, rol}, {rejectWithValue})=>{
+        
+        try{
+            const data = {
+                email,
+                password,
+                nombre: firstName + " " + lastName,
+                dni,
+                username,
+                rol
+            }
+            const user = await axios.post(`${API_BASE}/users/signup`,data)
+            console.log(user.data)
+            return user.data
+            
+        }catch(e){
+            console.log(e)
+            return rejectWithValue(e.response.data.error)
+        }
+    }
+    )
 const authSlice = createSlice({
     name: 'auth', 
     initialState: initialState,
@@ -59,6 +85,17 @@ const authSlice = createSlice({
             state.user = null
             state.loading = true;
 
+        },
+        [register.fulfilled]: (state, {payload}) => {
+            state.newUser = payload.user;
+            state.loading = false;
+        },
+        [register.rejected]: (state, {payload}) => {
+            state.error = payload;
+            state.loading = false;
+        },
+        [register.pending]: (state, {payload}) => {
+            state.loading = true;
         }
     }
 })

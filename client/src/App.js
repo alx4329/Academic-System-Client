@@ -4,6 +4,7 @@ import Login from './containers/Login/Login';
 import PrivateRoute from './components/PrivateRoute';
 import React from 'react';
 import Home from './containers/Home/Home';
+import Register from './containers/Register/Register';
 function App() {
 
 
@@ -13,7 +14,7 @@ function App() {
           <Route exact path='/' element={<PrivateRoute/>}>
               <Route exact path='/' element={<Home/>}/>
           </Route>
-        {/* <Route exact path='/register' element={<Register/>}/> */}
+        <Route exact path='/register' element={<Register/>}/>
         <Route exact path='/login' element={<Login/>}/>
         </Routes>
           
