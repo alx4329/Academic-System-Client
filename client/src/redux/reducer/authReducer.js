@@ -21,6 +21,8 @@ const initialState = {
 const headers = {
     'Authorization': `Bearer ${token}`,
 }
+
+
 export const login = createAsyncThunk(
     'login',
     async ({email,password}, {rejectWithValue})=>{
@@ -41,7 +43,13 @@ export const login = createAsyncThunk(
         }
     }
     )
-
+export const logout = createAsyncThunk(
+    'logout',
+    async ()=>{
+        localStorage.removeItem("currentUser")
+        localStorage.removeItem("token")
+    }
+)
 export const register = createAsyncThunk(
     'register',
     async ({email,password, firstName, lastName, dni, username, rol}, {rejectWithValue})=>{
@@ -69,7 +77,9 @@ const authSlice = createSlice({
     name: 'auth', 
     initialState: initialState,
     reducers:{
-
+        cleanNewUser: (state)=>{
+            state.newUser = null
+        }
     },
     extraReducers: {
         [login.fulfilled]: (state, {payload}) => {
@@ -96,8 +106,18 @@ const authSlice = createSlice({
         },
         [register.pending]: (state, {payload}) => {
             state.loading = true;
+        },
+        [logout.fulfilled]: (state, {payload}) => {
+            state.user = null;
+            state.token = null;
+            state.loading = false;
+        },
+        [logout.rejected]: (state, {payload}) => {
+            state.loading = false;
         }
+        
+
     }
 })
-
+export const { cleanNewUser } = authSlice.actions
 export default authSlice.reducer

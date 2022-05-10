@@ -5,6 +5,7 @@ import PrivateRoute from './components/PrivateRoute';
 import React from 'react';
 import Home from './containers/Home/Home';
 import Register from './containers/Register/Register';
+import Navbar from './components/Navbar/Navbar';
 function App() {
 
 
@@ -12,9 +13,11 @@ function App() {
     <Router>
         <Routes>
           <Route exact path='/' element={<PrivateRoute/>}>
+              
+              <Route path='/' element={<Navbar/>}/>
               <Route exact path='/' element={<Home/>}/>
+              <Route exact path='/register' element={[<Navbar/>,<Register/>]}/>
           </Route>
-        <Route exact path='/register' element={<Register/>}/>
         <Route exact path='/login' element={<Login/>}/>
         </Routes>
           
