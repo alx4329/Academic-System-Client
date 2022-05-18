@@ -63,9 +63,9 @@ const Register = () => {
         if(newUser){
             Swal.fire({
                 title: 'Usuario Creado!',
-                text: 'Puede iniciar sesion',
+                text: 'El usuario ha sido creado correctamente',
                 icon: 'success',
-                confirmButtonText: 'Ir'
+                confirmButtonText: 'Ok'
               }).then((value)=>{
                 dispatch(cleanNewUser());
                 value && navigate('/');

@@ -7,19 +7,19 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../redux/reducer/authReducer';
 
 export default function Navbar() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-
+    const user = useSelector(state => state.auth.user);
     const goRegister = () =>{
         navigate('/register');
     }
     const goCreateCareer = ()=>{
-        alert('funcion no lista');
-        // navigate('/createcareer');
+        
+        navigate('/newCareer');
     }
     const signOut = () =>{
         dispatch(logout())
@@ -41,11 +41,17 @@ export default function Navbar() {
                         <MenuIcon />
                     </IconButton>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                        SIU IPESMI
+                        SIU IPESMI - {user.nombre}
                     </Typography>
-                    <Button onClick={goRegister} color="inherit">Nuevo Usuario</Button>
-                    <Button onClick={goCreateCareer} color="inherit">Nueva Carrera</Button>
-                    <Button onClick={signOut} color="inherit">Logout</Button>
+                    {
+                        (user.rol === "Admin" || user.rol === "SuperAdmin") &&
+                        <>
+                            <Button onClick={goRegister} color="inherit">Nuevo Usuario</Button>
+                            <Button onClick={goCreateCareer} color="inherit">Nueva Carrera</Button>
+                        </>
+                        
+                    }
+                            <Button onClick={signOut} color="inherit">Logout</Button>
                 </Toolbar>
             </AppBar>
         </Box>
