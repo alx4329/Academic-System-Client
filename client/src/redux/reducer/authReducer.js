@@ -38,8 +38,8 @@ export const login = createAsyncThunk(
             return user.data
              
         }catch(e){
-            console.log(e.error)
-            return {error:"Error al obtener el usuario"}
+            console.log(e)
+            return rejectWithValue({message:e.message})
         }
     }
     )
@@ -79,6 +79,9 @@ const authSlice = createSlice({
     reducers:{
         cleanNewUser: (state)=>{
             state.newUser = null
+        },
+        cleanError: (state)=>{
+            state.error = null
         }
     },
     extraReducers: {
@@ -90,6 +93,7 @@ const authSlice = createSlice({
         [login.rejected]: (state, {payload}) => {
             console.log(payload)
             state.loading = false;
+            state.error = payload;
         },
         [login.pending]: (state, {payload}) => {
             state.user = null
@@ -119,5 +123,5 @@ const authSlice = createSlice({
 
     }
 })
-export const { cleanNewUser } = authSlice.actions
+export const { cleanNewUser, cleanError } = authSlice.actions
 export default authSlice.reducer

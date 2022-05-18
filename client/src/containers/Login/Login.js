@@ -12,7 +12,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import {login} from '../../redux/reducer/authReducer'
+import {login, cleanError} from '../../redux/reducer/authReducer'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 
@@ -22,9 +22,11 @@ export default function Login() {
     const dispatch = useDispatch();
     let navigate = useNavigate();
     const user = useSelector(state => state.auth.user);
+    const error = useSelector(state => state.auth.error);
     
     React.useEffect(()=>{
         if(user){
+            dispatch(cleanError())
             navigate('/');
         }
 
