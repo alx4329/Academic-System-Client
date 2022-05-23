@@ -53,7 +53,8 @@ const Register = () => {
                 lastName: data.get('lastName'),
                 dni: data.get('dni'),
                 username: data.get('username'),
-                rol: rol
+                rol: rol,
+                fileNumber: data.get('Legajo'),
             }))
         } else {
             alert("Please fill out all fields")

@@ -52,7 +52,7 @@ export const logout = createAsyncThunk(
 )
 export const register = createAsyncThunk(
     'register',
-    async ({email,password, firstName, lastName, dni, username, rol}, {rejectWithValue})=>{
+    async ({email,password, firstName, lastName, dni, username, rol, fileNumber}, {rejectWithValue})=>{
         
         try{
             const data = {
@@ -61,7 +61,8 @@ export const register = createAsyncThunk(
                 nombre: firstName + " " + lastName,
                 dni,
                 username,
-                rol
+                rol,
+                fileNumber
             }
             const user = await axios.post(`${API_BASE}/users/signup`,data)
             console.log(user.data)
