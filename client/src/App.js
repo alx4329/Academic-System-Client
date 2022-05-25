@@ -8,7 +8,7 @@ import Home from './containers/Home/Home';
 import Register from './containers/Register/Register';
 import Navbar from './components/Navbar/Navbar';
 import NewCareer from './containers/NewCareer/NewCareer';
-import StudyPlan from './containers/NewSubject/NewSubject';
+import NewSubject from './containers/NewSubject/NewSubject';
 function App() {
 
 
@@ -21,7 +21,8 @@ function App() {
             <Route exact path='/' element={<AdminRoutes/>}>
               <Route exact path='/register' element={[<Navbar/>,<Register/>]}/>
               <Route exact path='/newCareer' element={[<Navbar/>,<NewCareer/>]}/>
-              <Route exact path='/createStudyplan/:careerId' element={[<Navbar/>,<StudyPlan/>]}/>
+              <Route exact path='/newSubject/:careerId' element={[<Navbar/>,<NewSubject/>]}/>
+              <Route exact path='/plan/:careerId' element={[<Navbar/>]} />
             </Route>
           </Route>
         <Route exact path='/login' element={<Login/>}/>

@@ -3,9 +3,7 @@ import axios from 'axios';
 import { API_BASE } from '../../config';
 
 
-let newCareer = localStorage.getItem("career")
-  ? JSON.parse(localStorage.getItem("career"))
-  : "";
+
 let token = localStorage.getItem("token")
   ? JSON.parse(localStorage.getItem("token"))
   : "";
@@ -13,8 +11,9 @@ let token = localStorage.getItem("token")
 
 
 const initialState = {
-    newCareer: newCareer || null,
+    newCareer: null,
     career: null,
+    careers: [],
     subjects: [],
     createdSubject: null,
     token: token || null,
@@ -36,7 +35,6 @@ export const addCareer = createAsyncThunk(
                 code
             }
             const career = await axios.post(`${API_BASE}/careers`,data,headers)
-            localStorage.setItem("newCareer", JSON.stringify(career.data))
             return career.data
         }catch(e){
             return rejectWithValue({message:e.message})
@@ -47,10 +45,25 @@ export const getCareer = createAsyncThunk(
     'getCareer',
     async ({careerId}, {rejectWithValue})=>{
         console.log(careerId)
+        
         try{
-            const careerInfo = await axios.get(`${API_BASE}/careers/${careerId}`,headers)
+            const careerInfo = await axios.get(`${API_BASE}/careers?careerId=${careerId}`,headers)
             console.log(careerInfo.data)
-            localStorage.setItem("career", JSON.stringify(careerInfo.data))
+            
+            return careerInfo.data
+        }catch(e){
+            return rejectWithValue({message:e.message})
+        }
+    }
+    )
+export const getCareers = createAsyncThunk(
+    'getCareers',
+    async ( _, {rejectWithValue})=>{
+        console.log("dispatchinnnnnnnn")
+        try{
+            const careerInfo = await axios.get(`${API_BASE}/careers`,headers)
+            console.log(careerInfo.data)
+            
             return careerInfo.data
         }catch(e){
             return rejectWithValue({message:e.message})
@@ -65,7 +78,7 @@ export const newSubject = createAsyncThunk(
             const subject = await axios.post(`${API_BASE}/subjects`,info,headers)
             return subject.data
         }catch(e){
-            return rejectWithValue({message:e.message})
+            return rejectWithValue({message:e.message|| e})
         }
     }
 )
@@ -114,6 +127,17 @@ const careerSlice = createSlice({
         [newSubject.rejected]: (state, action) => {
             state.loading = false
             state.error = action.payload.message
+        },
+        [getCareers.pending]: (state, action) => {
+            state.loading = true
+        },
+        [getCareers.fulfilled]: (state, action) => {
+            state.loading = false
+            state.careers = action.payload
+        },
+        [getCareers.rejected]: (state, action) => {
+            state.loading = false
+            state.error = action.payload
         }
 
 

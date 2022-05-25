@@ -15,6 +15,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {login, cleanError} from '../../redux/reducer/authReducer'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
+import Swal from 'sweetalert2'
 
 const theme = createTheme();
 
@@ -29,8 +30,16 @@ export default function Login() {
             dispatch(cleanError())
             navigate('/');
         }
-
     },[user])
+    React.useEffect(()=>{
+        if(error?.message === "Request failed with status code 401"){
+            Swal.fire({
+                text: "Wrong username or password",
+                toast: true,
+            })
+        }
+
+    },[error])
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);

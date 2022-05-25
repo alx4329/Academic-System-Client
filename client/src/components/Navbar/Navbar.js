@@ -9,17 +9,25 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../redux/reducer/authReducer';
+import { getCareers } from '../../redux/reducer/careerReducer';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import CollapseButton from './CollapseButton';
 
 export default function Navbar() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const user = useSelector(state => state.auth.user);
+    const careers = useSelector(state => state.career.careers);
+    
     const goRegister = () =>{
         navigate('/register');
     }
-    const goCreateCareer = ()=>{
-        
+    const goCreateCareer = ()=>{        
         navigate('/newCareer');
+    }
+    const goCareer = (id)=>{
+        navigate(`/plan/${id}`);
     }
     const signOut = () =>{
         dispatch(logout())
@@ -27,9 +35,12 @@ export default function Navbar() {
         navigate('/login');
         },1000)
     }
+    React.useEffect(()=>{
+        dispatch(getCareers());
+    },[])
     return (
         <Box sx={{ flexGrow: 1 }}>
-            <AppBar position="static">
+            <AppBar position="sticky" height="10%" >
                 <Toolbar>
                     <IconButton
                         size="large"
@@ -48,6 +59,13 @@ export default function Navbar() {
                         <>
                             <Button onClick={goRegister} color="inherit">Nuevo Usuario</Button>
                             <Button onClick={goCreateCareer} color="inherit">Nueva Carrera</Button>
+                            <CollapseButton 
+                                title="Carreras" 
+                                items={careers}
+                                onClickAction={goCareer}
+                                />
+                            
+                            
                         </>
                         
                     }

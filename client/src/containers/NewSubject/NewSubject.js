@@ -15,6 +15,8 @@ import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import MenuItem from '@mui/material/MenuItem';
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
 
 const theme = createTheme();
 
@@ -39,7 +41,7 @@ function getStyles(name, personName, theme) {
     };
   }
 // COMPONENT
-const StudyPlan = () => {
+const NewSubject = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const {careerId} = useParams();
@@ -48,7 +50,9 @@ const StudyPlan = () => {
         codigo: '',
         año:'',  
         toCourse:[],
-        toTakeExam:[]
+        toTakeExam:[],
+        lastSubject:false,
+        period:''
     })
     const error = useSelector(state => state.career.error);
     const career = useSelector(state => state.career.career);
@@ -64,9 +68,6 @@ const StudyPlan = () => {
         console.log(state)
       };
     
-
-
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         const info = {
@@ -75,7 +76,8 @@ const StudyPlan = () => {
             year: state.año,
             toCourse: state.toCourse,
             toTakeExam: state.toTakeExam,
-            careerId: careerId
+            careerId: careerId,
+            lastSubject: state.lastSubject
         }
         await dispatch(newSubject({info}))
         
@@ -90,7 +92,6 @@ const StudyPlan = () => {
     React.useEffect(()=>{
             if(careerId) {
                 dispatch(getCareer({careerId}))
-                console.log(career)
             }
     },[careerId])
     React.useEffect(()=>{
@@ -107,7 +108,7 @@ const StudyPlan = () => {
     },[createdSubject])
     
 
-   
+    const label = { inputProps: { 'aria-label': 'Checkbox demo' } }
 
     return (
         <ThemeProvider theme={theme}>
@@ -206,8 +207,54 @@ const StudyPlan = () => {
                                     </Select>
 
                                 </Grid>
-                                
-                                
+                                <Grid item xs={24} sm={6}>
+                                    <InputLabel id="demo-multiple-name-label">Periodo</InputLabel>
+                                        <Select
+                                            labelId="demo-multiple-name-label"
+                                            id="demo-multiple-name"
+                                            
+                                            value={state.period}
+                                            name="period"
+                                            onChange={handleChange}
+                                            input={<OutlinedInput label="Periodo" fullWidth />}
+                                            MenuProps={MenuProps}
+                                    >
+                                        <MenuItem
+                                            key='Primero'
+                                            value='Primero'
+                                            style={getStyles('Primero','Primero',  theme)}
+                                            >
+                                            {'1° Cuatrimestre'}
+                                        </MenuItem>
+                                        <MenuItem
+                                            key='Segundo'
+                                            value='Segundo'
+                                            style={getStyles('Segundo','Segundo',  theme)}
+                                            >
+                                            {'2° Cuatrimestre'}
+                                        </MenuItem>
+                                        <MenuItem
+                                            key='Anual'
+                                            value='Anual'
+                                            style={getStyles('Anual', 'Anual', theme)}
+                                            >
+                                            {'Anual'}
+                                        </MenuItem>
+                                    
+                                    
+                                    </Select>
+
+                                </Grid>
+                                <Grid item xs={24} sm={6} >
+                                    <FormControlLabel 
+                                        control={
+                                            <Checkbox 
+                                            checked={state.lastSubject}
+                                            onChange={()=>setState({...state, lastSubject: !state.lastSubject})}    
+                                        />} 
+                                        label="Ultima Materia" />
+
+                                </Grid>
                                 </Grid>
                                     <Button
                                         type="submit"
@@ -228,5 +275,5 @@ const StudyPlan = () => {
     )
 }
 
-export default StudyPlan;
+export default NewSubject;
 
