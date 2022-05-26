@@ -20,15 +20,24 @@ const NewCareer = () => {
     const newCareer = useSelector(state => state.career.newCareer);
     const error = useSelector(state => state.career.error);
     const navigate = useNavigate();
+    const [state, setState] = React.useState({
+        name: '',
+        code: '',
+        years: ''
+    })
 
+    const handleChange = (e) =>{
+        setState({
+            ...state,
+            [e.target.name]: e.target.value
+        })
+        console.log(state)
+    }
     const handleSubmit = (e) => {
         e.preventDefault();
         const data = new FormData(e.currentTarget);
-            if(data.get('nombre').length>0 && data.get('codigo').length>0){
-                dispatch(addCareer({
-                    name: data.get('nombre'),
-                    code: data.get('codigo'),
-                }))
+            if(state.name.length>0 && state.code.length>0 && state.years.length>0){
+                dispatch(addCareer(state))
             }
     }
 
@@ -84,14 +93,16 @@ const NewCareer = () => {
                         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
                             <Grid container spacing={2}>
                             
-                                <Grid item xs={12} sm={6}>
+                                <Grid item xs={12} sm={12}>
                                     <TextField
-                                        name="nombre"
+                                        name="name"
                                         required
                                         fullWidth
                                         id="nombre"
-                                        label="nombre"
+                                        label="Nombre"
                                         autoFocus
+                                        value={state.name}
+                                        onChange={handleChange}
                                     />
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -99,8 +110,22 @@ const NewCareer = () => {
                                         required
                                         fullWidth
                                         id="codigo"
-                                        label="codigo"
-                                        name="codigo"
+                                        label="Codigo"
+                                        name="code"
+                                        value={state.code}
+                                        onChange={handleChange}
+                                    />
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <TextField
+                                        type="number"
+                                        required
+                                        fullWidth
+                                        id="years"
+                                        label="Cantidad de años"
+                                        name="years"
+                                        value={state.years}
+                                        onChange={handleChange}
                                     />
                                 </Grid>
                                 
@@ -112,6 +137,7 @@ const NewCareer = () => {
                                         fullWidth
                                         variant="contained"
                                         sx={{ mt: 3, mb: 2 }}
+                                        
                                         >
                                         Crear
                                     </Button>

@@ -27,12 +27,13 @@ const headers = {
 
 export const addCareer = createAsyncThunk(
     'addCareer',
-    async ({name,code}, {rejectWithValue})=>{
+    async ({name,code,years}, {rejectWithValue})=>{
        
         try{
             const data = {
                 name,
-                code
+                code,
+                years
             }
             const career = await axios.post(`${API_BASE}/careers`,data,headers)
             return career.data

@@ -2,6 +2,10 @@ import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {  useParams } from "react-router-dom";
 import { getCareer } from '../../redux/reducer/careerReducer';
+import StudyPlan from '../../components/StudyPlan';
+
+
+
 const CareerDetails = () => {
     const {careerId} = useParams();
     const dispatch = useDispatch();
@@ -17,6 +21,7 @@ const CareerDetails = () => {
     return (
         <div>
             <h1>{career?.name}</h1>
+            <StudyPlan career={career}/>
         </div>
     )
 }
