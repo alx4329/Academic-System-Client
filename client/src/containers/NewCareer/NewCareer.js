@@ -41,7 +41,7 @@ const NewCareer = () => {
                 confirmButtonText: 'Agregar'
               }).then((value)=>{
                 dispatch(cleanNewCareer());
-                value && navigate(`/createStudyplan/${newCareer.id}`);
+                value && navigate(`/NewSubject/${newCareer.id}`);
 
               })
 

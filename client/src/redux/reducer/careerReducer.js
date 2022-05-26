@@ -44,11 +44,10 @@ export const addCareer = createAsyncThunk(
 export const getCareer = createAsyncThunk(
     'getCareer',
     async ({careerId}, {rejectWithValue})=>{
-        console.log(careerId)
         
         try{
             const careerInfo = await axios.get(`${API_BASE}/careers?careerId=${careerId}`,headers)
-            console.log(careerInfo.data)
+            
             
             return careerInfo.data
         }catch(e){
@@ -62,8 +61,6 @@ export const getCareers = createAsyncThunk(
         console.log("dispatchinnnnnnnn")
         try{
             const careerInfo = await axios.get(`${API_BASE}/careers`,headers)
-            console.log(careerInfo.data)
-            
             return careerInfo.data
         }catch(e){
             return rejectWithValue({message:e.message})
@@ -78,7 +75,8 @@ export const newSubject = createAsyncThunk(
             const subject = await axios.post(`${API_BASE}/subjects`,info,headers)
             return subject.data
         }catch(e){
-            return rejectWithValue({message:e.message|| e})
+            console.log(e)
+            return rejectWithValue({message:e.response.data.message || e.message|| e})
         }
     }
 )

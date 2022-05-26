@@ -10,7 +10,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCareer, newSubject} from '../../redux/reducer/careerReducer';
 import Swal from 'sweetalert2'
-import { useNavigate, useParams } from "react-router-dom";
+import {  useParams } from "react-router-dom";
 import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
 import OutlinedInput from '@mui/material/OutlinedInput';
@@ -43,7 +43,6 @@ function getStyles(name, personName, theme) {
 // COMPONENT
 const NewSubject = () => {
     const dispatch = useDispatch();
-    const navigate = useNavigate();
     const {careerId} = useParams();
     const [state, setState] = React.useState({
         nombre: '',
@@ -55,10 +54,24 @@ const NewSubject = () => {
         period:''
     })
     const error = useSelector(state => state.career.error);
+    React.useEffect(()=>{
+        if(error){
+            Swal.fire({
+                title: 'Error!',
+                text: error,
+                icon: 'error',
+                confirmButtonText: 'Ok'
+              }).then((value)=>{
+                
+                value && window.location.reload();
+              })
+
+        }
+
+    },[error])
     const career = useSelector(state => state.career.career);
     const createdSubject = useSelector(state => state.career.createdSubject);
 
-    const [toCourse, setToCourse] = React.useState([]);
     
     const handleRelatives = (event) => {
         setState({
@@ -74,7 +87,6 @@ const NewSubject = () => {
             name: state.nombre,
             code: state.codigo,
             year: state.año,
-            toCourse: state.toCourse,
             toTakeExam: state.toTakeExam,
             careerId: careerId,
             lastSubject: state.lastSubject
@@ -93,6 +105,7 @@ const NewSubject = () => {
             if(careerId) {
                 dispatch(getCareer({careerId}))
             }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[careerId])
     React.useEffect(()=>{
         if(createdSubject){
@@ -107,8 +120,6 @@ const NewSubject = () => {
         }
     },[createdSubject])
     
-
-    const label = { inputProps: { 'aria-label': 'Checkbox demo' } }
 
     return (
         <ThemeProvider theme={theme}>
@@ -175,7 +186,7 @@ const NewSubject = () => {
                                         <MenuItem
                                             key={subject.name}
                                             value={subject.id}
-                                            style={getStyles(subject.name, toCourse, theme)}
+                                            style={getStyles(subject.name, subject.name, theme)}
                                             >
                                             {subject.name}
                                         </MenuItem>
@@ -199,7 +210,7 @@ const NewSubject = () => {
                                         <MenuItem
                                             key={subject.name}
                                             value={subject.id}
-                                            style={getStyles(subject.name, toCourse, theme)}
+                                            style={getStyles(subject.name, state.toCourse, theme)}
                                             >
                                             {subject.name}
                                         </MenuItem>
@@ -207,17 +218,17 @@ const NewSubject = () => {
                                     </Select>
 
                                 </Grid>
-                                <Grid item xs={24} sm={6}>
+                                <Grid item xs={24} sm={12}>
                                     <InputLabel id="demo-multiple-name-label">Periodo</InputLabel>
-                                        <Select
-                                            labelId="demo-multiple-name-label"
-                                            id="demo-multiple-name"
-                                            
-                                            value={state.period}
-                                            name="period"
-                                            onChange={handleChange}
-                                            input={<OutlinedInput label="Periodo" fullWidth />}
-                                            MenuProps={MenuProps}
+                                    <Select
+                                        labelId="demo-multiple-name-label"
+                                        id="demo-multiple-name"
+                                        
+                                        value={state.period}
+                                        name="period"
+                                        onChange={handleChange}
+                                        input={<OutlinedInput label="Periodo" fullWidth />}
+                                        MenuProps={MenuProps}
                                     >
                                         <MenuItem
                                             key='Primero'
@@ -240,36 +251,28 @@ const NewSubject = () => {
                                             >
                                             {'Anual'}
                                         </MenuItem>
-                                    
-                                    
-                                    </Select>
 
-                                </Grid>
-                                <Grid item xs={24} sm={6} >
+                                    </Select>
                                     <FormControlLabel 
                                         control={
                                             <Checkbox 
                                             checked={state.lastSubject}
                                             onChange={()=>setState({...state, lastSubject: !state.lastSubject})}    
                                         />} 
-                                        label="Ultima Materia" />
-
+                                        label="Ultima Materia" 
+                                    />                                
                                 </Grid>
-                                </Grid>
-                                    <Button
-                                        type="submit"
-                                        fullWidth
-                                        variant="contained"
-                                        sx={{ mt: 3, mb: 2 }}
-                                        >
-                                        Crear
-                                    </Button>
-                                <Grid container justifyContent="flex-end">
-                                
                             </Grid>
+                            <Button
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                sx={{ mt: 3, mb: 2 }}
+                                >
+                                Crear
+                            </Button>                                
                         </Box>
                     </Box>
-                    
                 </Container>
             </ThemeProvider>
     )

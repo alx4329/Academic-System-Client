@@ -10,8 +10,6 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../redux/reducer/authReducer';
 import { getCareers } from '../../redux/reducer/careerReducer';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
 import CollapseButton from './CollapseButton';
 
 export default function Navbar() {
@@ -37,6 +35,7 @@ export default function Navbar() {
     }
     React.useEffect(()=>{
         dispatch(getCareers());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
     return (
         <Box sx={{ flexGrow: 1 }}>

@@ -9,6 +9,7 @@ import Register from './containers/Register/Register';
 import Navbar from './components/Navbar/Navbar';
 import NewCareer from './containers/NewCareer/NewCareer';
 import NewSubject from './containers/NewSubject/NewSubject';
+import CareerDetails from './containers/CareerDetails/CareerDetails';
 function App() {
 
 
@@ -22,7 +23,7 @@ function App() {
               <Route exact path='/register' element={[<Navbar/>,<Register/>]}/>
               <Route exact path='/newCareer' element={[<Navbar/>,<NewCareer/>]}/>
               <Route exact path='/newSubject/:careerId' element={[<Navbar/>,<NewSubject/>]}/>
-              <Route exact path='/plan/:careerId' element={[<Navbar/>]} />
+              <Route exact path='/plan/:careerId' element={[<Navbar/>,<CareerDetails/>]} />
             </Route>
           </Route>
         <Route exact path='/login' element={<Login/>}/>
