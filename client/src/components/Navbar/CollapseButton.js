@@ -29,7 +29,7 @@ const CollapseButton = ({ title, items, onClickAction }) => {
             >
                 {
                     items?.map((item)=>{
-                        return <MenuItem onClick={()=>handleClose(item)}>{item.name}</MenuItem>
+                        return <MenuItem key={item.id} onClick={()=>handleClose(item)}>{item.name}</MenuItem>
                     })
                 }
             </Menu>

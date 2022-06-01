@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {  useParams } from "react-router-dom";
 import { getCareer } from '../../redux/reducer/careerReducer';
 import StudyPlan from '../../components/StudyPlan';
-
+import './CareerDetails.css'
 
 
 const CareerDetails = () => {
@@ -20,8 +20,12 @@ const CareerDetails = () => {
     
     return (
         <div>
-            <h1>{career?.name}</h1>
-            <StudyPlan career={career}/>
+            <div className='head'>
+                <h2 >{career?.name}</h2>
+                <h4>Plan de estudios</h4>
+
+            </div>
+            {career && <StudyPlan career={career}/>}
         </div>
     )
 }

@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useDispatch, useSelector } from 'react-redux';
-import { getCareer, newSubject} from '../../redux/reducer/careerReducer';
+import { cleanError, getCareer, newSubject} from '../../redux/reducer/careerReducer';
 import Swal from 'sweetalert2'
 import {  useParams } from "react-router-dom";
 import InputLabel from '@mui/material/InputLabel';
@@ -63,7 +63,7 @@ const NewSubject = () => {
                 confirmButtonText: 'Ok'
               }).then((value)=>{
                 
-                value && window.location.reload();
+                value && cleanError();
               })
 
         }
@@ -87,9 +87,11 @@ const NewSubject = () => {
             name: state.nombre,
             code: state.codigo,
             year: state.año,
+            toCourse:state.toCourse,
             toTakeExam: state.toTakeExam,
             careerId: careerId,
-            lastSubject: state.lastSubject
+            lastSubject: state.lastSubject,
+            period: state.period
         }
         await dispatch(newSubject({info}))
         
@@ -222,8 +224,7 @@ const NewSubject = () => {
                                     <InputLabel id="demo-multiple-name-label">Periodo</InputLabel>
                                     <Select
                                         labelId="demo-multiple-name-label"
-                                        id="demo-multiple-name"
-                                        
+                                        id="demo-multiple-name"                                        
                                         value={state.period}
                                         name="period"
                                         onChange={handleChange}
