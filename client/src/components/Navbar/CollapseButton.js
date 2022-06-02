@@ -8,6 +8,7 @@ const CollapseButton = ({ title, items, onClickAction }) => {
     const open = Boolean(anchorEl);
     const handleClose = (item) => {
         setAnchorEl(null);
+        console.log("item", item)
         onClickAction(item.id)
       };
     

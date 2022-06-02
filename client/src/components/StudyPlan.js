@@ -7,10 +7,12 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import careerReducer from '../redux/reducer/careerReducer';
+import { Button } from '@mui/material';
+import './Navbar/Navbar.css'
+import { useNavigate } from "react-router-dom";
 
 const StudyPlan = ({career}) => {
-
+  const navigate = useNavigate();
     const columns = [
         {id:'year',label:'Año',minWidth:50},
         { id: 'code', label: 'Codigo', minWidth: 100 },
@@ -47,8 +49,9 @@ const StudyPlan = ({career}) => {
 
         }
         let string = ''
+        
         if(period ==='Primero') string = '1°C'
-        if(period ==='Segundo') string = '2°C'
+        else if(period ==='Segundo') string = '2°C'
         else string= 'Anual'
         return { year,name, code, toCourse: toCourse.join(', '), toTakeExam: toTakeExam.join(', '),period: string };
       }
@@ -69,54 +72,61 @@ const StudyPlan = ({career}) => {
         setPage(0);
       };
     return(
-        <Paper sx={{ width: '60%', overflow: 'hidden', margin:'0 20%' }}>
-            <TableContainer >
-                <Table stickyHeader aria-label="sticky table">
-                <TableHead>
-                    <TableRow>
-                    {columns.map((column) => (
-                        <TableCell
-                        key={column.id}
-                        align={column.align}
-                        style={{ minWidth: column.minWidth }}
-                        >
-                        {column.label}
-                        </TableCell>
-                    ))}
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {rows
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((row) => {
-                        return (
-                        <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
-                            {columns.map((column) => {
-                            const value = row[column.id];
-                            return (
-                                <TableCell key={column.id} align={column.align} size='small'>
-                                {column.format && typeof value === 'number'
-                                    ? column.format(value)
-                                    : value}
-                                </TableCell>
-                            );
-                            })}
-                        </TableRow>
-                        );
-                    })}
-                </TableBody>
-                </Table>
-            </TableContainer>
-            <TablePagination
-                rowsPerPageOptions={[10, 25, 100]}
-                component="div"
-                count={rows.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
-            />
-    </Paper>
+        <>
+          <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+              <TableContainer >
+                  <Table stickyHeader aria-label="sticky table">
+                  <TableHead>
+                      <TableRow>
+                      {columns.map((column) => (
+                          <TableCell
+                          key={column.id}
+                          align={column.align}
+                          style={{ minWidth: column.minWidth }}
+                          >
+                          {column.label}
+                          </TableCell>
+                      ))}
+                      </TableRow>
+                  </TableHead>
+                  <TableBody>
+                      {rows
+                      .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                      .map((row) => {
+                          return (
+                          <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
+                              {columns.map((column) => {
+                              const value = row[column.id];
+                              return (
+                                  <TableCell key={column.id} align={column.align} size='small'>
+                                  {column.format && typeof value === 'number'
+                                      ? column.format(value)
+                                      : value}
+                                  </TableCell>
+                              );
+                              })}
+                          </TableRow>
+                          );
+                      })}
+                  </TableBody>
+                  </Table>
+              </TableContainer>
+              <TablePagination
+                  rowsPerPageOptions={[10, 25, 100]}
+                  component="div"
+                  count={rows.length}
+                  rowsPerPage={rowsPerPage}
+                  page={page}
+                  onPageChange={handleChangePage}
+                  onRowsPerPageChange={handleChangeRowsPerPage}
+              />
+      </Paper>
+      <br/>
+      <div className='addSubjects' >
+      <Button onClick={()=>{navigate(`/newSubject/${career.id}`)}} variant="contained" >Agregar materias</Button>
+
+      </div>
+    </>
     )
 }
 

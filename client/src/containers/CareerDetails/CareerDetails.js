@@ -11,7 +11,8 @@ const CareerDetails = () => {
     const dispatch = useDispatch();
     const career = useSelector(state=>state.career.career);
     React.useEffect(()=>{
-        if(careerId) {
+        if(careerId !== 'undefined' && careerId !== null && careerId !== '' && careerId !== undefined ){
+            console.log("dispatching por aca", careerId)
             dispatch(getCareer({careerId}))
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -19,7 +20,7 @@ const CareerDetails = () => {
     
     
     return (
-        <div>
+        <div className="careerContainer">
             <div className='head'>
                 <h2 >{career?.name}</h2>
                 <h4>Plan de estudios</h4>
