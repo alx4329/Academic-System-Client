@@ -35,7 +35,6 @@ const NewCareer = () => {
     }
     const handleSubmit = (e) => {
         e.preventDefault();
-        const data = new FormData(e.currentTarget);
             if(state.name.length>0 && state.code.length>0 && state.years.length>0){
                 dispatch(addCareer(state))
             }
@@ -56,6 +55,7 @@ const NewCareer = () => {
 
         }
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[newCareer])
 
     React.useEffect(()=>{

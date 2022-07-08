@@ -30,7 +30,7 @@ const DeletePlanButton= ({id})=>{
                 confirmButtonText: 'Ok'
                 })
         }
-    },[])
+    },[error])
     
     
     const handleDeletePlan = ()=>{
