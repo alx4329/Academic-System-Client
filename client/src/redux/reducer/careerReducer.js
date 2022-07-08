@@ -61,7 +61,6 @@ export const getCareer = createAsyncThunk(
 export const getCareers = createAsyncThunk(
     'getCareers',
     async ( _, {rejectWithValue})=>{
-        console.log("dispatchinnnnnnnn")
         try{
             const careerInfo = await axios.get(`${API_BASE}/careers`,headers)
             return careerInfo.data

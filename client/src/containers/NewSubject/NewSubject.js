@@ -123,6 +123,7 @@ const NewSubject = () => {
                 icon: 'success',
                 confirmButtonText: 'Agregar'
               }).then((value)=>{
+                console.log(value)
                 value && window.location.reload()
               })
         }

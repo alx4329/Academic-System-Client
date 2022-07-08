@@ -42,7 +42,7 @@ const DeletePlanButton= ({id})=>{
             confirmButtonText: 'Eliminar',
             cancelButtonText:'No! cancelar'
           }).then((value)=>{
-            dispatch(deletePlan({id}))
+            value.isConfirmed && dispatch(deletePlan({id}))
           })
     }
     return(
