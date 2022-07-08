@@ -10,6 +10,7 @@ import TableRow from '@mui/material/TableRow';
 import { Button } from '@mui/material';
 import './Navbar/Navbar.css'
 import { useNavigate } from "react-router-dom";
+import DeletePlanButton from './DeletePlanButton';
 
 const StudyPlan = ({career}) => {
   const navigate = useNavigate();
@@ -59,7 +60,7 @@ const StudyPlan = ({career}) => {
       const rows = career.subjects?.map(career=>{
         return createData(career.year,career.name,career.code,career.toCourse,career.toTakeExam, career.period)
         })
-        console.log(rows)
+        
       const [page, setPage] = React.useState(0);
       const [rowsPerPage, setRowsPerPage] = React.useState(10);
     
@@ -124,7 +125,7 @@ const StudyPlan = ({career}) => {
       <br/>
       <div className='addSubjects' >
       <Button onClick={()=>{navigate(`/newSubject/${career.id}`)}} variant="contained" >Agregar materias</Button>
-
+      <DeletePlanButton id={career.id} />
       </div>
     </>
     )

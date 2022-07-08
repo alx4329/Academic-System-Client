@@ -34,7 +34,7 @@ export default function Login() {
     React.useEffect(()=>{
         if(error?.message === "Request failed with status code 401"){
             Swal.fire({
-                text: "Wrong username or password",
+                text: "Usuario o contraseña inválidos",
                 toast: true,
             })
         }
@@ -66,50 +66,50 @@ export default function Login() {
                 <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-                Sign in
+                Ingresar
             </Typography>
             <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                 <TextField
-                margin="normal"
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
-                autoFocus
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="email"
+                    label="Email"
+                    name="email"
+                    autoComplete="email"
+                    autoFocus
                 />
                 <TextField
-                margin="normal"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
+                    margin="normal"
+                    required
+                    fullWidth
+                    name="password"
+                    label="Contraseña"
+                    type="password"
+                    id="password"
+                    autoComplete="current-password"
                 />
                 <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
+                    control={<Checkbox value="remember" color="primary" />}
+                    label="Recordarme"
                 />
                 <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    sx={{ mt: 3, mb: 2 }}
                 >
-                Sign In
+                Ingresar
                 </Button>
                 <Grid container>
                 <Grid item xs>
                     <Link href="#" variant="body2">
-                    Forgot password?
+                    Olvidé mi contraseña
                     </Link>
                 </Grid>
                 <Grid item>
                     <Link href="#" variant="body2">
-                    {"Don't have an account? Sign Up"}
+                    Registrarme
                     </Link>
                 </Grid>
                 </Grid>

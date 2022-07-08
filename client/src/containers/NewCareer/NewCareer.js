@@ -48,11 +48,11 @@ const NewCareer = () => {
                 text: 'Ahora puede agregar el plan de estudios',
                 icon: 'success',
                 confirmButtonText: 'Agregar'
-              }).then((value)=>{
-                dispatch(cleanNewCareer());
-                value && navigate(`/NewSubject/${newCareer.id}`);
+                }).then((value)=>{
+                    dispatch(cleanNewCareer());
+                    value && navigate(`/NewSubject/${newCareer.id}`);
 
-              })
+                })
 
         }
 

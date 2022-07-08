@@ -83,18 +83,24 @@ const NewSubject = () => {
     
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const info = {
-            name: state.nombre,
-            code: state.codigo,
-            year: state.año,
-            toCourse:state.toCourse,
-            toTakeExam: state.toTakeExam,
-            careerId: careerId,
-            lastSubject: state.lastSubject,
-            period: state.period
-        }
-        await dispatch(newSubject({info}))
-        
+        if(!state.nombre || !state.codigo || !state.año || !state.period ) {
+            Swal.fire({
+                text: "completar todos los campos",
+                toast: true,
+            })
+        } else {
+            const info = {
+                name: state.nombre,
+                code: state.codigo,
+                year: state.año,
+                toCourse:state.toCourse,
+                toTakeExam: state.toTakeExam,
+                careerId: careerId,
+                lastSubject: state.lastSubject,
+                period: state.period
+            }
+            await dispatch(newSubject({info}))
+        }        
     }
     const handleChange = (e) => {
         setState({

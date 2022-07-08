@@ -18,7 +18,8 @@ const initialState = {
     createdSubject: null,
     token: token || null,
     loading: false,
-    error: null
+    error: null, 
+    success:false
 }
 const headers = {
     'Authorization': `Bearer ${token}`,
@@ -42,6 +43,7 @@ export const addCareer = createAsyncThunk(
         }
     }
     )
+
 export const getCareer = createAsyncThunk(
     'getCareer',
     async ({careerId}, {rejectWithValue})=>{
@@ -80,8 +82,22 @@ export const newSubject = createAsyncThunk(
             return rejectWithValue({message:e.response.data.message || e.message|| e})
         }
     }
-)
+    )
+    export const deletePlan = createAsyncThunk(
+    'deletePlan', 
+    async({id},{rejectWithValue})=>{
+        console.log(id)
+        const info= {careerId:id}
+        try{
+            const deleted = await axios.post(`${API_BASE}/subjects/allInCareer`,info,headers)
+            if(deleted.status==="ok") return 
+        }catch(e){
+            console.log(e) 
+            return rejectWithValue({message:e.response.data.message || e.message|| e})
 
+        }
+    }
+)
 const careerSlice = createSlice({
     name: 'career', 
     initialState: initialState,
@@ -135,6 +151,18 @@ const careerSlice = createSlice({
             state.careers = action.payload
         },
         [getCareers.rejected]: (state, action) => {
+            state.loading = false
+            state.error = action.payload
+        },
+        [deletePlan.pending]: (state, action) => {
+            state.loading = true
+        },
+        [deletePlan.fulfilled]: (state, action) => {
+            state.loading = false
+            state.success = true
+            
+        },
+        [deletePlan.rejected]: (state, action) => {
             state.loading = false
             state.error = action.payload
         }
