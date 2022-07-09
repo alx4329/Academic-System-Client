@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {  useParams } from "react-router-dom";
 import { getCareer } from '../../redux/reducer/careerReducer';
-import StudyPlan from '../../components/StudyPlan';
+import StudyPlan from '../../components/Studyplan/StudyPlan';
 import './CareerDetails.css'
 
 
@@ -10,13 +10,18 @@ const CareerDetails = () => {
     const {careerId} = useParams();
     const dispatch = useDispatch();
     const career = useSelector(state=>state.career.career);
+    const createdSubject = useSelector(state=>state.career.createdSubject)
+    
     React.useEffect(()=>{
+        console.log(createdSubject)
         if(careerId !== 'undefined' && careerId !== null && careerId !== '' && careerId !== undefined ){
             dispatch(getCareer({careerId}))
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[careerId])
-    
+    },[careerId,createdSubject])
+    React.useEffect(()=>{
+        console.log(career)
+    },[career])
     
     return (
         <div className="careerContainer">

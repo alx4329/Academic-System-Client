@@ -14,7 +14,6 @@ const initialState = {
     newCareer: null,
     career: null,
     careers: [],
-    subjects: [],
     createdSubject: null,
     token: token || null,
     loading: false,
@@ -75,6 +74,19 @@ export const newSubject = createAsyncThunk(
         console.log(info)
         try{
             const subject = await axios.post(`${API_BASE}/subjects`,info,headers)
+            return subject.data
+        }catch(e){
+            console.log(e)
+            return rejectWithValue({message:e.response.data.message || e.message|| e})
+        }
+    }
+    )
+export const updateSubject = createAsyncThunk(
+    'updateSubject',
+    async ({info,id},{rejectWithValue})=>{
+        console.log(info)
+        try{
+            const subject = await axios.put(`${API_BASE}/subjects?subjectId=${id}`,info,headers)
             return subject.data
         }catch(e){
             console.log(e)
@@ -164,7 +176,18 @@ const careerSlice = createSlice({
         [deletePlan.rejected]: (state, action) => {
             state.loading = false
             state.error = action.payload
-        }
+        },
+        [updateSubject.pending]: (state, action) => {
+            state.loading = true
+        },
+        [updateSubject.fulfilled]: (state, action) => {
+            state.loading = false
+            state.createdSubject = action.payload
+        },
+        [updateSubject.rejected]: (state, action) => {
+            state.loading = false
+            state.error = action.payload.message
+        },
 
 
         

@@ -8,57 +8,40 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { Button } from '@mui/material';
-import './Navbar/Navbar.css'
+import './StudyPlan.css'
 import { useNavigate } from "react-router-dom";
 import DeletePlanButton from './DeletePlanButton';
+import { createData } from '../../utils/formatters';
+import EditSubject from './EditSubject';
 
 const StudyPlan = ({career}) => {
+  const [openEditModal, setOpenEM] = React.useState(false);
   const navigate = useNavigate();
     const columns = [
-        {id:'year',label:'Año',minWidth:50},
-        { id: 'code', label: 'Codigo', minWidth: 100 },
+        {id:'year',label:'Año',minWidth:10},
+        { id: 'code', label: 'Codigo', minWidth: 30 },
         { id: 'name', label: 'Nombre', minWidth: 170 },
-        { id: 'period', label: 'Dictado', minWidth: 170 },
+        { id: 'period', label: 'Dictado', minWidth: 30 },
         {
           id: 'toCourse',
           label: 'Para cursar',
-          minWidth: 170,
+          minWidth: 200,
           align: 'right',
           format: (value) => value.toLocaleString('en-US'),
         },
         {
           id: 'toTakeExam',
           label: 'Para Rendir',
-          minWidth: 170,
+          minWidth: 200,
           align: 'right',
           format: (value) => value.toLocaleString('en-US'),
-        }
+        },
+        {id:'actions',align:'center', label:'Editar', minWidth:150}
       ];
       
-      function createData(year, name, code, Course, TakeExam,period) {
-        
-        const toTakeExam = TakeExam.map((id)=>{
-          const obj = career.subjects.find((subject)=>subject.id === id )
-          return obj.name
-        })
-        let toCourse =[];
-        if(Course){
-          toCourse = Course.map((id)=>{
-            const obj = career.subjects.find((subject)=>subject.id === id )
-            return obj.name
-          })
-
-        }
-        let string = ''
-        
-        if(period ==='Primero') string = '1°C'
-        else if(period ==='Segundo') string = '2°C'
-        else string= 'Anual'
-        return { year,name, code, toCourse: toCourse.join(', '), toTakeExam: toTakeExam.join(', '),period: string };
-      }
       
-      const rows = career.subjects?.map(career=>{
-        return createData(career.year,career.name,career.code,career.toCourse,career.toTakeExam, career.period)
+      const rows = career.subjects?.map(subject=>{
+        return createData(subject.id, subject.year,subject.name,subject.code,subject.toCourse,subject.toTakeExam, subject.period, "actions", career)
         })
         
       const [page, setPage] = React.useState(0);
@@ -72,6 +55,8 @@ const StudyPlan = ({career}) => {
         setRowsPerPage(+event.target.value);
         setPage(0);
       };
+
+      
     return(
         <>
           <Paper sx={{ width: '100%', overflow: 'hidden' }}>
@@ -102,7 +87,7 @@ const StudyPlan = ({career}) => {
                                   <TableCell key={column.id} align={column.align} size='small'>
                                   {column.format && typeof value === 'number'
                                       ? column.format(value)
-                                      : value}
+                                      : value==="actions"?<EditSubject row={row} />: value}
                                   </TableCell>
                               );
                               })}
@@ -123,7 +108,7 @@ const StudyPlan = ({career}) => {
               />
       </Paper>
       <br/>
-      <div className='addSubjects' >
+      <div className='planButtons' >
       <Button onClick={()=>{navigate(`/newSubject/${career.id}`)}} variant="contained" >Agregar materias</Button>
       <DeletePlanButton id={career.id} />
       </div>

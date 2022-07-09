@@ -1,9 +1,9 @@
 import React from 'react'
 import { Button } from '@mui/material';
 import Swal from 'sweetalert2'
-import { deletePlan } from '../redux/reducer/careerReducer';
+import { deletePlan } from '../../redux/reducer/careerReducer';
 import { useDispatch, useSelector } from 'react-redux';
-
+import { cleanError } from '../../redux/reducer/careerReducer';
 const DeletePlanButton= ({id})=>{
     const dispatch = useDispatch()
     const success = useSelector(state=>state.career.success)
@@ -24,11 +24,15 @@ const DeletePlanButton= ({id})=>{
     React.useEffect(()=>{
         if(error){
             Swal.fire({
-                title: 'Hubo un error al eliminar el plan de estudios.',
-                text:error,
-                icon: 'success',
+                title: 'Error!',
+                text: error,
+                icon: 'error',
                 confirmButtonText: 'Ok'
+                }).then((value)=>{
+                
+                value && cleanError();
                 })
+
         }
     },[error])
     

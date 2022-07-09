@@ -30,6 +30,7 @@ export default function Login() {
             dispatch(cleanError())
             navigate('/');
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[user])
     React.useEffect(()=>{
         if(error?.message === "Request failed with status code 401"){
