@@ -57,7 +57,10 @@ const Register = () => {
                 fileNumber: data.get('Legajo'),
             }))
         } else {
-            alert("Please fill out all fields")
+            Swal.fire({
+                text: "completar todos los campos",
+                toast: true,
+            })
         }
       };
     React.useEffect(()=>{

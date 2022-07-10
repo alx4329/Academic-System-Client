@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import DeletePlanButton from './DeletePlanButton';
 import { createData } from '../../utils/formatters';
 import EditSubject from './EditSubject';
+import { orderByNumber } from '../../utils/sorters';
 
 const StudyPlan = ({career}) => {
   const [openEditModal, setOpenEM] = React.useState(false);
@@ -39,8 +40,13 @@ const StudyPlan = ({career}) => {
         {id:'actions',align:'center', label:'Editar', minWidth:150}
       ];
       
+      let subjects = career.subjects
+      let arrayForSort = [...subjects]
+      orderByNumber(arrayForSort, "year", 1)
+      subjects=arrayForSort
       
-      const rows = career.subjects?.map(subject=>{
+
+      const rows = subjects?.map(subject=>{
         return createData(subject.id, subject.year,subject.name,subject.code,subject.toCourse,subject.toTakeExam, subject.period, "actions", career)
         })
         

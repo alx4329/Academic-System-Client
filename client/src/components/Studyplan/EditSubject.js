@@ -239,8 +239,6 @@ const EditSubject = ({row})=>{
                                         />} 
                                         label="Ultima Materia" 
                                     />   
-                                
-
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={handleOpen}>Cerrar</Button>
@@ -248,17 +246,7 @@ const EditSubject = ({row})=>{
                     </DialogActions>
                 </Dialog>
             }
-            <br></br>
-            {/* {
-                alertState.type.length>0 && <Stack sx={{ width: '40%' }} spacing={12}>
-                            <Alert severity={alertState.type} onClose={cleanAlert}>{alertState.message}</Alert>
-                        </Stack>
-            } */}
-            
-        
-
         </>  
-
     )
 
 }

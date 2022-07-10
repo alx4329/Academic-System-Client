@@ -17,6 +17,7 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import MenuItem from '@mui/material/MenuItem';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import { periodOptions } from '../../utils/constants';
 
 const theme = createTheme();
 
@@ -128,7 +129,18 @@ const NewSubject = () => {
               })
         }
     },[createdSubject])
+    const [years, setYears]=React.useState([])
     
+    React.useEffect(()=>{
+        if(career){
+            let numbers= []
+            for(let i=1 ; i<career.years+1; i++){
+               numbers.push(i)
+            }
+            setYears(numbers)
+
+        }
+    },[career])
 
     return (
         <ThemeProvider theme={theme}>
@@ -170,14 +182,30 @@ const NewSubject = () => {
                                     />
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
-                                    <TextField
-                                        required
-                                        fullWidth
-                                        id="año"
+                                    {/* <InputLabel id="demo-simple-select-label">Año</InputLabel> */}
+                                    <Select
+                                        labelId="demo-simple-select-label"
+                                        id="demo-simple-select"
                                         label="Año"
+                                        value={state.año}
                                         name="año"
                                         onChange={handleChange}
-                                    />
+                                        fullWidth
+                                        MenuProps={MenuProps}
+                                        displayEmpty
+                                    >
+                                    <MenuItem disabled value="">
+                                        <em>Año</em>
+                                    </MenuItem>
+                                    {
+                                        years?.map((item)=> <MenuItem
+                                                                    key={item}
+                                                                    value={item}
+                                                                    >
+                                                                    {item}
+                                                                </MenuItem>) 
+                                    }
+                                    </Select>
                                 </Grid>
                                 <Grid item xs={24} sm={12}>
                                     <InputLabel id="demo-multiple-name-label">Correlativas para cursar</InputLabel>
@@ -228,7 +256,7 @@ const NewSubject = () => {
 
                                 </Grid>
                                 <Grid item xs={24} sm={12}>
-                                    <InputLabel id="demo-multiple-name-label">Periodo</InputLabel>
+                                <InputLabel id="demo-multiple-name-label">Periodo</InputLabel>
                                     <Select
                                         labelId="demo-multiple-name-label"
                                         id="demo-multiple-name"                                        
@@ -238,28 +266,16 @@ const NewSubject = () => {
                                         input={<OutlinedInput label="Periodo" fullWidth />}
                                         MenuProps={MenuProps}
                                     >
-                                        <MenuItem
-                                            key='Primero'
-                                            value='Primero'
-                                            style={getStyles('Primero','Primero',  theme)}
-                                            >
-                                            {'1° Cuatrimestre'}
-                                        </MenuItem>
-                                        <MenuItem
-                                            key='Segundo'
-                                            value='Segundo'
-                                            style={getStyles('Segundo','Segundo',  theme)}
-                                            >
-                                            {'2° Cuatrimestre'}
-                                        </MenuItem>
-                                        <MenuItem
-                                            key='Anual'
-                                            value='Anual'
-                                            style={getStyles('Anual', 'Anual', theme)}
-                                            >
-                                            {'Anual'}
-                                        </MenuItem>
-
+                                        {
+                                        periodOptions.map((option)=> <MenuItem
+                                                                        key={option.value}
+                                                                        value={option.value}
+                                                                        style={getStyles('Primero','Primero',  theme)}
+                                                                        >
+                                                                        {option.text}
+                                                                    </MenuItem>
+                                        )
+                                        }
                                     </Select>
                                     <FormControlLabel 
                                         control={

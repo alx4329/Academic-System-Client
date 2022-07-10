@@ -4,6 +4,7 @@ import {  useParams } from "react-router-dom";
 import { getCareer } from '../../redux/reducer/careerReducer';
 import StudyPlan from '../../components/Studyplan/StudyPlan';
 import './CareerDetails.css'
+import { cleanNewCareer } from '../../redux/reducer/careerReducer';
 
 
 const CareerDetails = () => {
@@ -16,12 +17,11 @@ const CareerDetails = () => {
         console.log(createdSubject)
         if(careerId !== 'undefined' && careerId !== null && careerId !== '' && careerId !== undefined ){
             dispatch(getCareer({careerId}))
+            dispatch(cleanNewCareer())
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[careerId,createdSubject])
-    React.useEffect(()=>{
-        console.log(career)
-    },[career])
+    
     
     return (
         <div className="careerContainer">
