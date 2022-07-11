@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../redux/reducer/authReducer';
 import { getCareers } from '../../redux/reducer/careerReducer';
 import CollapseButton from './CollapseButton';
+import { userTypes } from '../../utils/constants';
 
 export default function Navbar() {
     const dispatch = useDispatch();
@@ -26,6 +27,10 @@ export default function Navbar() {
     }
     const goCareer = (id)=>{
         navigate(`/plan/${id}`);
+    }
+
+    const goUsers = (id)=>{
+        navigate(`/users/${id}`)
     }
     const signOut = () =>{
         dispatch(logout())
@@ -51,13 +56,18 @@ export default function Navbar() {
                         <MenuIcon />
                     </IconButton>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                        SIU IPESMI - {user.nombre}
+                        SIU IPESMI - {user.nombre + " " + user.apellido }
                     </Typography>
                     {
                         (user.rol === "Admin" || user.rol === "SuperAdmin") &&
                         <>
                             <Button onClick={goRegister} color="inherit">Nuevo Usuario</Button>
                             <Button onClick={goCreateCareer} color="inherit">Nueva Carrera</Button>
+                            <CollapseButton 
+                                title="Usuarios" 
+                                items={userTypes}
+                                onClickAction={goUsers}
+                                />
                             <CollapseButton 
                                 title="Carreras" 
                                 items={careers}

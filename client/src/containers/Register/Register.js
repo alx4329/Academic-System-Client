@@ -3,7 +3,6 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -14,7 +13,7 @@ import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import { useDispatch, useSelector } from 'react-redux';
-import { register } from '../../redux/reducer/authReducer';
+import { cleanError, register } from '../../redux/reducer/authReducer';
 import Swal from 'sweetalert2'
 import { useNavigate } from "react-router-dom";
 import {cleanNewUser} from '../../redux/reducer/authReducer'
@@ -25,6 +24,9 @@ const Register = () => {
     const navigate = useNavigate();
     const [badEmail, setBadEmail] = React.useState(null);
     const [rol, setRol] = React.useState("");
+    const careers = useSelector(state => state.career.careers)
+    const [career, setCareer] = React.useState("")
+
     const loggedUser = useSelector(state => state.auth.user);
     const dispatch = useDispatch();
 
@@ -40,22 +42,22 @@ const Register = () => {
     }
 
     const handleSubmit = (event) => {
-        console.log(event.currentTarget)
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        console.log(data)
-        if(!badEmail && data.get('password').length>0 && data.get('firstName').length>0 && data.get('lastName').length>0 && data.get('dni').length>0 && data.get('username').length>0 && rol.length>0){
-            console.log("DISPATCHINNNNNG")
-            dispatch(register({
+        if(data.get('email').length>4 &&  !badEmail && data.get('password').length>0 && data.get('firstName').length>0 && data.get('lastName').length>0 && data.get('dni').length>0 && data.get('username').length>0 && rol.length>0){
+            const userInfo={
                 email: data.get('email'),
                 password: data.get('password'),
-                firstName: data.get('firstName'),
-                lastName: data.get('lastName'),
+                nombre: data.get('firstName'),
+                apellido: data.get('lastName'),
                 dni: data.get('dni'),
                 username: data.get('username'),
                 rol: rol,
                 fileNumber: data.get('Legajo'),
-            }))
+            }
+            if(rol ==="Estudiante") userInfo.careerId=career
+            console.log(userInfo)
+            dispatch(register(userInfo))
         } else {
             Swal.fire({
                 text: "completar todos los campos",
@@ -78,18 +80,20 @@ const Register = () => {
 
         }
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[newUser])
 
     React.useEffect(()=>{
         if(error){
+            console.log(error)
             Swal.fire({
                 title: 'Error!',
                 text: error,
                 icon: 'error',
                 confirmButtonText: 'Ok'
               }).then((value)=>{
+                dispatch(cleanError())
                 
-                value && window.location.reload();
               })
 
         }
@@ -97,136 +101,156 @@ const Register = () => {
     },[error])
 
     return (
-            <ThemeProvider theme={theme}>
-                <Container component="main" maxWidth="xs">
-                    <CssBaseline />
-                    <Box
-                    sx={{
-                        marginTop: 8,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                    }}
-                    >
-                        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                            <LockOutlinedIcon />
-                        </Avatar>
-                        <Typography component="h1" variant="h5">
-                            Nuevo Usuario
-                        </Typography>
-                        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
-                            <Grid container spacing={2}>
-                            <Grid item xs={12}>
-                            <InputLabel id="simple-select-label">Rol</InputLabel>
+    <ThemeProvider theme={theme}>
+        <Container component="main" maxWidth="xs">
+            <CssBaseline />
+            <Box
+            sx={{
+                marginTop: 8,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+            }}
+            >
+                <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+                    <LockOutlinedIcon />
+                </Avatar>
+                <Typography component="h1" variant="h5">
+                    Nuevo Usuario
+                </Typography>
+                <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+                    <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                    <InputLabel id="simple-select-label">Rol</InputLabel>
+                        <Select
+                            labelId="simple-select-label"
+                            id="simple-select"
+                            value={rol}
+                            label="Rol"
+                            onChange={(e)=>setRol(e.target.value)}
+                            fullWidth
+                            
+                        >
+                            {loggedUser.rol === "SuperAdmin"?<MenuItem value={"Admin"}>Admin</MenuItem>:null}
+                            <MenuItem value={"Docente"}>Docente</MenuItem>
+                            <MenuItem value={"Estudiante"}>Estudiante</MenuItem>
+                        </Select>
+
+                </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <TextField
+                            autoComplete="given-name"
+                            name="firstName"
+                            required
+                            fullWidth
+                            id="firstName"
+                            label="Nombre"
+                            autoFocus
+                            />
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <TextField
+                            required
+                            fullWidth
+                            id="lastName"
+                            label="Apellido"
+                            name="lastName"
+                            autoComplete="family-name"
+                            />
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <TextField
+                            name="dni"
+                            required
+                            fullWidth
+                            id="dni"
+                            label="DNI"
+                            autoFocus
+                            type="number"
+                            />
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <TextField
+                            required
+                            fullWidth
+                            id="username"
+                            label="Usuario"
+                            name="username"
+                            
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                            required
+                            fullWidth
+                            id="email"
+                            label="Email"
+                            name="email"
+                            autoComplete="email"
+                            onChange={(e)=>emailChange(e)}
+                            helperText={badEmail? "Please enter a valid email" :null}
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                            required
+                            fullWidth
+                            name="password"
+                            label="Contraseña"
+                            type="password"
+                            id="password"
+                            autoComplete="new-password"
+                            />
+                        </Grid>
+                        {
+                        (rol === "Estudiante" || rol === "Docente") &&   <Grid item xs={12}>
+                                <TextField
+                                required
+                                fullWidth
+                                name="Legajo"
+                                label="Legajo"
+                                type="text"
+                                id="Legajo"
+                                />
+                            </Grid>
+                        }
+                        {
+                        (rol === "Estudiante" ) &&   <Grid item xs={12}>
+                                <InputLabel id="simple-select-label">Carrera</InputLabel>
                                 <Select
                                     labelId="simple-select-label"
                                     id="simple-select"
-                                    value={rol}
-                                    label="Rol"
-                                    onChange={(e)=>setRol(e.target.value)}
-                                    fullWidth
-                                    
+                                    value={career}
+                                    label="Carrera"
+                                    onChange={(e)=>setCareer(e.target.value)}
+                                    fullWidth  
                                 >
-                                    {loggedUser.rol === "SuperAdmin"?<MenuItem value={"Admin"}>Admin</MenuItem>:null}
-                                    <MenuItem value={"Docente"}>Docente</MenuItem>
-                                    <MenuItem value={"Estudiante"}>Estudiante</MenuItem>
+                                    {
+                                        careers.map((item)=><MenuItem key={item.id} value={item.id} >
+                                            {item.name}
+                                        </MenuItem>)
+                                    }
                                 </Select>
-
-                        </Grid>
-                                <Grid item xs={12} sm={6}>
-                                    <TextField
-                                    autoComplete="given-name"
-                                    name="firstName"
-                                    required
-                                    fullWidth
-                                    id="firstName"
-                                    label="Nombre"
-                                    autoFocus
-                                    />
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-                                    <TextField
-                                    required
-                                    fullWidth
-                                    id="lastName"
-                                    label="Apellido"
-                                    name="lastName"
-                                    autoComplete="family-name"
-                                    />
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-                                    <TextField
-                                    name="dni"
-                                    required
-                                    fullWidth
-                                    id="dni"
-                                    label="DNI"
-                                    autoFocus
-                                    />
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-                                    <TextField
-                                    required
-                                    fullWidth
-                                    id="username"
-                                    label="Usuario"
-                                    name="username"
-                                    
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <TextField
-                                    required
-                                    fullWidth
-                                    id="email"
-                                    label="Email"
-                                    name="email"
-                                    autoComplete="email"
-                                    onChange={(e)=>emailChange(e)}
-                                    helperText={badEmail? "Please enter a valid email" :null}
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <TextField
-                                    required
-                                    fullWidth
-                                    name="password"
-                                    label="Contraseña"
-                                    type="password"
-                                    id="password"
-                                    autoComplete="new-password"
-                                    />
-                                </Grid>
-                                {
-                                (rol === "Estudiante" || rol === "Docente") &&   <Grid item xs={12}>
-                                        <TextField
-                                        required
-                                        fullWidth
-                                        name="Legajo"
-                                        label="Legajo"
-                                        type="text"
-                                        id="Legajo"
-                                        />
-                                    </Grid>
-                                }
-                                
-                                </Grid>
-                                    <Button
-                                        type="submit"
-                                        fullWidth
-                                        variant="contained"
-                                        sx={{ mt: 3, mb: 2 }}
-                                        >
-                                        Registrar
-                                    </Button>
-                                <Grid container justifyContent="flex-end">
-                                
                             </Grid>
-                        </Box>
-                    </Box>
-                    
-                </Container>
-            </ThemeProvider>
+                        }
+                        
+                        </Grid>
+                            <Button
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                sx={{ mt: 3, mb: 2 }}
+                                >
+                                Registrar
+                            </Button>
+                        <Grid container justifyContent="flex-end">
+                        
+                    </Grid>
+                </Box>
+            </Box>
+            
+        </Container>
+    </ThemeProvider>
     )
 }
 

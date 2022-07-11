@@ -24,6 +24,7 @@ function App() {
               <Route exact path='/newCareer' element={[<Navbar/>,<NewCareer/>]}/>
               <Route exact path='/newSubject/:careerId' element={[<Navbar/>,<NewSubject/>]}/>
               <Route exact path='/plan/:careerId' element={[<Navbar/>,<CareerDetails/>]} />
+              <Route exact path='/users/:type'    />
             </Route>
           </Route>
         <Route exact path='/login' element={<Login/>}/>
