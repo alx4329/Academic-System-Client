@@ -11,7 +11,7 @@ import { Button } from '@mui/material';
 import './StudyPlan.css'
 import { useNavigate } from "react-router-dom";
 import DeletePlanButton from './DeletePlanButton';
-import { createData } from '../../utils/formatters';
+import { createPlanData } from '../../utils/formatters';
 import EditSubject from './EditSubject';
 import { orderByNumber } from '../../utils/sorters';
 
@@ -47,7 +47,7 @@ const StudyPlan = ({career}) => {
       
 
       const rows = subjects?.map(subject=>{
-        return createData(subject.id, subject.year,subject.name,subject.code,subject.toCourse,subject.toTakeExam, subject.period, "actions", career)
+        return createPlanData(subject.id, subject.year,subject.name,subject.code,subject.toCourse,subject.toTakeExam, subject.period, "actions", career)
         })
         
       const [page, setPage] = React.useState(0);

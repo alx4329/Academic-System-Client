@@ -10,6 +10,7 @@ import Navbar from './components/Navbar/Navbar';
 import NewCareer from './containers/NewCareer/NewCareer';
 import NewSubject from './containers/NewSubject/NewSubject';
 import CareerDetails from './containers/CareerDetails/CareerDetails';
+import UsersList from './containers/UsersList/UsersList';
 function App() {
 
 
@@ -24,7 +25,7 @@ function App() {
               <Route exact path='/newCareer' element={[<Navbar/>,<NewCareer/>]}/>
               <Route exact path='/newSubject/:careerId' element={[<Navbar/>,<NewSubject/>]}/>
               <Route exact path='/plan/:careerId' element={[<Navbar/>,<CareerDetails/>]} />
-              <Route exact path='/users/:type'    />
+              <Route exact path='/users/:type' element={[<Navbar/>,<UsersList/>]}   />
             </Route>
           </Route>
         <Route exact path='/login' element={<Login/>}/>
