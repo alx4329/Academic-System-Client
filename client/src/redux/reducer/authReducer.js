@@ -32,7 +32,7 @@ export const login = createAsyncThunk(
                 email,
                 password
             }
-            const user = await axios.post(`${API_BASE}/users/signin`,data,headers)
+            const user = await axios.post(`/users/signin`,data,headers)
             localStorage.setItem("currentUser", JSON.stringify(user.data.user))
             localStorage.setItem("token", JSON.stringify(user.data.token))
             return user.data
@@ -56,7 +56,7 @@ export const register = createAsyncThunk(
         
         try{
             
-            const user = await axios.post(`${API_BASE}/users/signup`,data)
+            const user = await axios.post(`/users/signup`,data)
             console.log(user.data)
             return user.data
             

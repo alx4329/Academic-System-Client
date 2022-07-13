@@ -35,7 +35,7 @@ export const addCareer = createAsyncThunk(
                 code,
                 years
             }
-            const career = await axios.post(`${API_BASE}/careers`,data,headers)
+            const career = await axios.post(`/careers`,data,headers)
             return career.data
         }catch(e){
             return rejectWithValue({message:e.message})
@@ -48,7 +48,7 @@ export const getCareer = createAsyncThunk(
     async ({careerId}, {rejectWithValue})=>{
         
         try{
-            const careerInfo = await axios.get(`${API_BASE}/careers?careerId=${careerId}`,headers)
+            const careerInfo = await axios.get(`/careers?careerId=${careerId}`,headers)
             
             
             return careerInfo.data
@@ -61,7 +61,7 @@ export const getCareers = createAsyncThunk(
     'getCareers',
     async ( _, {rejectWithValue})=>{
         try{
-            const careerInfo = await axios.get(`${API_BASE}/careers`,headers)
+            const careerInfo = await axios.get(`/careers`,headers)
             return careerInfo.data
         }catch(e){
             return rejectWithValue({message:e.message})
@@ -73,7 +73,7 @@ export const newSubject = createAsyncThunk(
     async ({info},{rejectWithValue})=>{
         console.log(info)
         try{
-            const subject = await axios.post(`${API_BASE}/subjects`,info,headers)
+            const subject = await axios.post(`/subjects`,info,headers)
             return subject.data
         }catch(e){
             console.log(e)
@@ -86,7 +86,7 @@ export const updateSubject = createAsyncThunk(
     async ({info,id},{rejectWithValue})=>{
         console.log(info)
         try{
-            const subject = await axios.put(`${API_BASE}/subjects?subjectId=${id}`,info,headers)
+            const subject = await axios.put(`/subjects?subjectId=${id}`,info,headers)
             return subject.data
         }catch(e){
             console.log(e)
@@ -100,7 +100,7 @@ export const updateSubject = createAsyncThunk(
         console.log(id)
         const info= {careerId:id}
         try{
-            const deleted = await axios.post(`${API_BASE}/subjects/allInCareer`,info,headers)
+            const deleted = await axios.post(`/subjects/allInCareer`,info,headers)
             if(deleted.status==="ok") return 
         }catch(e){
             console.log(e) 

@@ -28,7 +28,7 @@ export const getStudents = createAsyncThunk(
     'getStudents',
     async( _, {rejectWithValue})=>{
         try{
-            const users = await axios.get(`${API_BASE}/students`,headers)
+            const users = await axios.get(`/students`,headers)
             return users.data
         }
         catch(e){
@@ -41,7 +41,7 @@ export const getTeachers = createAsyncThunk(
     'getTeachers',
     async( _, {rejectWithValue})=>{
     try{
-        const users = await axios.get(`${API_BASE}/teachers`,headers)
+        const users = await axios.get(`/teachers`,headers)
         return users.data
     }
     catch(e){
@@ -56,7 +56,7 @@ export const deleteUser = createAsyncThunk(
     async({dni, type}, {rejectWithValue})=>{
         console.log(dni, type)
         try{
-            const deleted = await axios.delete(`${API_BASE}/${type}?dni=${dni}`,headers)
+            const deleted = await axios.delete(`/${type}?dni=${dni}`,headers)
             return true
         }catch(e){
             rejectWithValue({message:e.message})
