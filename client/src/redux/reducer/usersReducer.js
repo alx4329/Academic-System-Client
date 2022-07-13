@@ -17,7 +17,8 @@ const initialState = {
     loading: false,
     studentsList:null,
     teachersList:null,
-    error: null
+    error: null, 
+    deleted: false
 }
 const headers = {
     'Authorization': `Bearer ${token}`,
@@ -27,7 +28,6 @@ export const getStudents = createAsyncThunk(
     'getStudents',
     async( _, {rejectWithValue})=>{
         try{
-            console.log("fetching studentssssssss")
             const users = await axios.get(`${API_BASE}/students`,headers)
             return users.data
         }
@@ -37,20 +37,33 @@ export const getStudents = createAsyncThunk(
         
     }
     )
-    export const getTeachers = createAsyncThunk(
-        'getTeachers',
-        async( _, {rejectWithValue})=>{
-        console.log("fetching TEACHERSssssssss")
+export const getTeachers = createAsyncThunk(
+    'getTeachers',
+    async( _, {rejectWithValue})=>{
+    try{
+        const users = await axios.get(`${API_BASE}/teachers`,headers)
+        return users.data
+    }
+    catch(e){
+        rejectWithValue({message:e.message})
+    }
+    
+}
+)
+
+export const deleteUser = createAsyncThunk(
+    'deleteUser', 
+    async({dni, type}, {rejectWithValue})=>{
+        console.log(dni, type)
         try{
-            const users = await axios.get(`${API_BASE}/teachers`,headers)
-            return users.data
-        }
-        catch(e){
+            const deleted = await axios.delete(`${API_BASE}/${type}?dni=${dni}`,headers)
+            return true
+        }catch(e){
             rejectWithValue({message:e.message})
+
+        }
     }
-        
-    }
-    )
+)
     
 const usersSlice = createSlice({
     name:'users', 
@@ -84,6 +97,17 @@ const usersSlice = createSlice({
             state.teachersList = action.payload
         },
         [getTeachers.rejected]: (state, action) => {
+            state.loading = false
+            state.error = action.payload.message
+        },
+        [deleteUser.pending]: (state, action) => {
+            state.loading = true
+        },
+        [deleteUser.fulfilled]: (state, action) => {
+            state.loading = false
+            state.deleteUser = action.payload
+        },
+        [deleteUser.rejected]: (state, action) => {
             state.loading = false
             state.error = action.payload.message
         },

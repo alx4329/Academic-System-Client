@@ -2,16 +2,18 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import DataTable from '../../components/Datatable'
-import { getStudents, clearList, getTeachers } from '../../redux/reducer/usersReducer'
+import { getStudents, clearList, getTeachers, deleteUser } from '../../redux/reducer/usersReducer'
 import { adminStudentsColumns, adminTeachersColumns } from '../../utils/constants'
 import { createStudentsData, createTeachersData } from '../../utils/formatters'
 import './UsersList.css'
+import Swal from 'sweetalert2'
 
 const UsersList = () =>{
     const {type} = useParams()
     const dispatch = useDispatch()
     const students = useSelector(state=> state.users.studentsList)
     const teachers = useSelector(state=> state.users.teachersList)
+    const deleted = useSelector(state=> state.users.deleted)
     const careers = useSelector (state => state.career.careers)
     const [studentsRows, setstudentsRows]=React.useState([])
     const [teachersRows, setteachersRows]=React.useState([])
@@ -27,7 +29,30 @@ const UsersList = () =>{
         if(teachers) setteachersRows(createTeachersData(teachers, careers))
     },[teachers])
 
-     
+    const handleDeleteUser = (dni)=>{
+        console.log(type)
+        Swal.fire({
+            title: '¿Eliminar Usuario?',
+            text: 'Esta acción no se puede revertir.',
+            showCancelButton: true,
+            icon: 'warning',
+            confirmButtonText: 'Eliminar',
+            cancelButtonText:'No! cancelar'
+          }).then((value)=>{
+            value.isConfirmed && dispatch(deleteUser({dni, type}))
+          })
+        
+    }
+
+    React.useEffect(()=>{
+        if(deleted) Swal.fire({
+            title: 'Usuario eliminado!',
+            icon: 'success',
+            confirmButtonText: 'Ok'
+            }).then((value)=>{
+                value && window.location.reload()
+              })
+    }, [deleted])
     return(
         <>
         {
@@ -37,11 +62,13 @@ const UsersList = () =>{
                 <DataTable
                     columns={adminStudentsColumns}
                     rows={studentsRows}
+                    actions= {handleDeleteUser}
                 /> 
                 : 
                 <DataTable
                     columns={adminTeachersColumns}
                     rows={teachersRows}
+                    actions= {handleDeleteUser}
                 /> 
             }
 

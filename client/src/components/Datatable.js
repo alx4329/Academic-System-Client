@@ -14,8 +14,7 @@ import EditSubject from '../components/Studyplan/EditSubject';
 
 
 const DataTable = ({columns, rows, actions}) => {
-    console.log("COLUMNS=======", columns)
-    console.log("ROWS=======", rows)
+    
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
     const handleChangePage = (event, newPage) => {
@@ -56,7 +55,7 @@ const DataTable = ({columns, rows, actions}) => {
                                     <TableCell key={column.id} align={column.align} size='small'>
                                     {column.format && typeof value === 'number'
                                         ? column.format(value)
-                                        : value==="actions"?<button>Alguna accion</button>: value}
+                                        : value==="actions"?<Button onClick={()=>actions(row.dni)}>Eliminar</Button>: value}
                                     </TableCell>
                                 );
                                 })}
