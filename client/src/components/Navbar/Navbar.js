@@ -56,7 +56,7 @@ export default function Navbar() {
                         <MenuIcon />
                     </IconButton>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                        SIU IPESMI - {user.nombre + " " + user.apellido }
+                        Sistema de Informacion Académica Instituto Carlos Linneo 
                     </Typography>
                     {
                         (user.rol === "Admin" || user.rol === "SuperAdmin") &&

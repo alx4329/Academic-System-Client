@@ -1,8 +1,8 @@
 import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { ReactReduxContext, useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import DataTable from '../../components/Datatable'
-import { getStudents, clearList, getTeachers, deleteUser } from '../../redux/reducer/usersReducer'
+import { getStudents, clearList, getTeachers, deleteUser, cleanDeleted } from '../../redux/reducer/usersReducer'
 import { adminStudentsColumns, adminTeachersColumns } from '../../utils/constants'
 import { createStudentsData, createTeachersData } from '../../utils/formatters'
 import './UsersList.css'
@@ -43,33 +43,60 @@ const UsersList = () =>{
           })
         
     }
-
+    const [title, setTitle] = React.useState("")
+    
     React.useEffect(()=>{
         if(deleted) Swal.fire({
             title: 'Usuario eliminado!',
             icon: 'success',
             confirmButtonText: 'Ok'
             }).then((value)=>{
-                value && window.location.reload()
+                if(value) {
+                    dispatch(cleanDeleted())
+                    dispatch(getStudents())
+                    dispatch(getTeachers())
+
+                }
+                    
+                    // window.location.reload()
+                    
               })
     }, [deleted])
     return(
         <>
         {
             <div className='ListContainer' >
+            
             {
-                type==='students' ? 
-                <DataTable
-                    columns={adminStudentsColumns}
-                    rows={studentsRows}
-                    actions= {handleDeleteUser}
-                /> 
-                : 
-                <DataTable
-                    columns={adminTeachersColumns}
-                    rows={teachersRows}
-                    actions= {handleDeleteUser}
-                /> 
+                type==='students' ? (
+                    <div>
+                        <div className='head'>
+                            <h2>Lista de Usuarios</h2>
+                            <h4>Estudiantes</h4>
+
+                        </div>
+                        <DataTable
+                            columns={adminStudentsColumns}
+                            rows={studentsRows}
+                            actions= {handleDeleteUser}
+                        /> 
+
+                    </div>
+                )
+                : (
+                    <div>
+                        <div className='head'>
+                            <h2>Lista de Usuarios</h2>
+                            <h4>Docentes</h4>
+                        </div>
+                    <DataTable
+                        columns={adminTeachersColumns}
+                        rows={teachersRows}
+                        actions= {handleDeleteUser}
+                    /> 
+
+                    </div>
+                )
             }
 
             </div>

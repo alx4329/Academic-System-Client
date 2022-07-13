@@ -74,7 +74,8 @@ const Register = () => {
                 confirmButtonText: 'Ok'
               }).then((value)=>{
                 dispatch(cleanNewUser());
-                value && navigate('/');
+                value && window.location.reload()
+                  
 
               })
 

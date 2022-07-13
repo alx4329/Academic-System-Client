@@ -75,6 +75,9 @@ const usersSlice = createSlice({
         clearList:(state)=>{
             state.studentsList=null
             state.teachersList=null
+        }, 
+        cleanDeleted:(state)=>{
+            state.deleted=false
         }
     }, 
     extraReducers:{
@@ -105,7 +108,7 @@ const usersSlice = createSlice({
         },
         [deleteUser.fulfilled]: (state, action) => {
             state.loading = false
-            state.deleteUser = action.payload
+            state.deleted = action.payload
         },
         [deleteUser.rejected]: (state, action) => {
             state.loading = false
@@ -114,5 +117,5 @@ const usersSlice = createSlice({
     }
 })
 
-export const { cleanError, clearList} = usersSlice.actions
+export const { cleanError, clearList, cleanDeleted} = usersSlice.actions
 export default usersSlice.reducer
