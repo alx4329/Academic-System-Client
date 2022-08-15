@@ -16,7 +16,8 @@ export const adminStudentsColumns = [
         { id: 'dni', label: 'Dni', minWidth: 100 },
         {id:"carrera", label:"Carrera", minWidth:100},
         {id:"email", label:"Email", minWidth:100},
-        {id:'actions',align:'center', label:'Editar', minWidth:150}
+        {id:'actions',align:'center', label:'Eliminar', minWidth:150},
+        {id:'actions',align:'center', label:'Agregar Examen', minWidth:150}
     ]
     
     export const adminTeachersColumns=[
@@ -25,6 +26,6 @@ export const adminStudentsColumns = [
         {id:'apellido',label:'Apellido',minWidth:100},
         { id: 'dni', label: 'Dni', minWidth: 100 },
         {id:"email", label:"Email", minWidth:100},
-        {id:'actions',align:'center', label:'Editar', minWidth:150}
+        {id:'actions',align:'center', label:'Eliminar', minWidth:150}
 
 ]

@@ -22,6 +22,9 @@ export default function Navbar() {
     const goRegister = () =>{
         navigate('/register');
     }
+    const goToExams = () =>{
+        navigate('/createExam')
+    }
     const goCreateCareer = ()=>{        
         navigate('/newCareer');
     }
@@ -73,12 +76,10 @@ export default function Navbar() {
                                 items={careers}
                                 onClickAction={goCareer}
                                 />
-                            
-                            
                         </>
-                        
                     }
-                            <Button onClick={signOut} color="inherit">Logout</Button>
+                    <Button onClick={goToExams} color="inherit">Cargar Examen</Button>
+                    <Button onClick={signOut} color="inherit">Salir</Button>
                 </Toolbar>
             </AppBar>
         </Box>

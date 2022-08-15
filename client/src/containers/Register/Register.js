@@ -67,13 +67,13 @@ const Register = () => {
       };
     React.useEffect(()=>{
         if(newUser){
+            dispatch(cleanNewUser());
             Swal.fire({
                 title: 'Usuario Creado!',
                 text: 'El usuario ha sido creado correctamente',
                 icon: 'success',
                 confirmButtonText: 'Ok'
-              }).then((value)=>{
-                dispatch(cleanNewUser());
+            }).then((value)=>{
                 value && window.location.reload()
                   
 

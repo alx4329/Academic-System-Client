@@ -46,14 +46,13 @@ export const addCareer = createAsyncThunk(
 export const getCareer = createAsyncThunk(
     'getCareer',
     async ({careerId}, {rejectWithValue})=>{
-        
         try{
             const careerInfo = await axios.get(`/careers?careerId=${careerId}`,headers)
             
             
             return careerInfo.data
         }catch(e){
-            return rejectWithValue({message:e.message})
+            return rejectWithValue({message:e.message||e})
         }
     }
     )

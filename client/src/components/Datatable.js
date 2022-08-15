@@ -8,8 +8,7 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { Button } from '@mui/material';
-import { useNavigate } from "react-router-dom";
-import EditSubject from '../components/Studyplan/EditSubject';
+import AddExam from './Students/AddExam';
 
 
 
@@ -25,6 +24,8 @@ const DataTable = ({columns, rows, actions}) => {
         setRowsPerPage(+event.target.value);
         setPage(0);
       };
+
+      
     return(
         <>
         <Paper sx={{ width: '100%', overflow: 'hidden' }}>
@@ -32,9 +33,9 @@ const DataTable = ({columns, rows, actions}) => {
                     <Table stickyHeader aria-label="sticky table">
                     <TableHead>
                         <TableRow>
-                        {columns.map((column) => (
+                        {columns.map((column,i) => (
                             <TableCell
-                            key={column.id}
+                            key={column.id+i}
                             align={column.align}
                             style={{ minWidth: column.minWidth }}
                             >
@@ -49,13 +50,18 @@ const DataTable = ({columns, rows, actions}) => {
                         .map((row) => {
                             return (
                             <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
-                                {columns.map((column) => {
+                                {columns.map((column,i) => {
                                 const value = row[column.id];
                                 return (
-                                    <TableCell key={column.id} align={column.align} size='small'>
+                                    <TableCell key={column.id+i} align={column.align} size='small'>
                                     {column.format && typeof value === 'number'
                                         ? column.format(value)
-                                        : value==="actions"?<Button onClick={()=>actions(row.dni)}>Eliminar</Button>: value}
+                                        : value==="actions"?
+                                        (column.label === "Eliminar" ? 
+                                        <Button onClick={()=>actions(row.dni)}>{column.label}</Button>:
+                                        <AddExam row={row} />
+                                        )
+                                        : value}
                                     </TableCell>
                                 );
                                 })}

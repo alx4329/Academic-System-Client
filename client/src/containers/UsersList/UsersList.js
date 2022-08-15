@@ -30,7 +30,6 @@ const UsersList = () =>{
     },[teachers])
 
     const handleDeleteUser = (dni)=>{
-        console.log(type)
         Swal.fire({
             title: '¿Eliminar Usuario?',
             text: 'Esta acción no se puede revertir.',
@@ -43,7 +42,7 @@ const UsersList = () =>{
           })
         
     }
-    const [title, setTitle] = React.useState("")
+    
     
     React.useEffect(()=>{
         if(deleted) Swal.fire({
